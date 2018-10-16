@@ -7,9 +7,9 @@ To do by Saturday evening:
 
 Upload all seperates files to github each day.
 
-1. Split dataset into 2: (Geet)
-  i) Dataset containing default color scheme
-  ii) Dataset containing custom color schemes
+1. Split dataset into 2: (Geet) (DONE!)
+  i) Dataset containing default color scheme (DONE!)
+  ii) Dataset containing custom color schemes (DONE!)
 
 2. Exploratory plots:
   i) boxplot for each variable (Vishal)
