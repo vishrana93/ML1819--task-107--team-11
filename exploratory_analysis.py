@@ -24,6 +24,7 @@ def main():
     # load the dataset
     dataset = '/home/markg/Documents/TCD/ML/ML1819--task-107--team-11/dataset/twitter_gender_colors.csv'
     data = pd.read_csv(dataset, na_values = '?')
+    data = data.drop(['Unnamed: 10', 'Unnamed: 11'], axis=1)
     print (data)
 
 if __name__ == '__main__':
