@@ -9,15 +9,7 @@ def boxplot(column):
 
 def plot_hist(column):
     # to do: plot histogram for each individual variable
-    # An "interface" to matplotlib.axes.Axes.hist() method
-    # n, bins, patches = plt.hist(x=d, bins='auto', color='#0504aa',
-    #                             alpha=0.7, rwidth=0.85)
-    # plt.grid(axis='y', alpha=0.75)
-    # plt.xlabel('Value')
-    # plt.ylabel('Frequency')
-    # plt.title('My Very Own Histogram')
-    # plt.text(23, 45, r'$\mu=15, b=3$')
-    # maxfreq = n.max()
+
     return 0
 
 def plot_hist_two(column, y):
@@ -38,9 +30,10 @@ def main():
 
     # to access specific columns
     fav_number = data.loc[:,'fav_number']
-    # n, bins, patches = plt.hist(x=fav_number, bins='auto', color='#0504aa',
-    #                              alpha=0.7, rwidth='auto')
-    print (fav_number)
+
+    # need to set a limit on value
+    # plt.hist(fav_number)
+    # plt.show()
 
 if __name__ == '__main__':
   main()
