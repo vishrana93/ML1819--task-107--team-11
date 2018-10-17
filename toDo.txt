@@ -12,12 +12,15 @@ Upload all seperates files to github each day.
   ii) Dataset containing custom color schemes (DONE!)
 
 2. Exploratory plots:
-  i) boxplot for each variable (Vishal)
-  ii) boxplot for each variable seperated by gender (i.e. 1 boxplot for fav_number for males,
+  i) boxplot for each variable in overall_dataset (Vishal)
+  ii) boxplot for each variable seperated by gender in overall_dataset (i.e. 1 boxplot for fav_number for males,
   1 for fav_number for females) (Vishal)
   iii) two-way histogram for each variable (i.e. histogram for male, females for
   each variable) (Mark)
-  iv) scatter plot for different variables colored by gender (Geet)
+  iv) scatter plot for different variables colored by gender in both datasets and overall_dataset (Geet)
+  v) male/female date of registration plot. Why did we not include this variable? (Mark)
+  vi) Proportion test for filling in tweet location. (Mark) https://www.socscistatistics.com/tests/ztest/Default2.aspx (DONE!)
+
 
 3. Decision tree analysis (Vishal)
   - split into test 10% and training 90%
