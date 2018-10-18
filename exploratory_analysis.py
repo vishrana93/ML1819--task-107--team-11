@@ -1,4 +1,5 @@
-# the below needs to be done for each of our two datasets
+#!/usr/bin/env python3
+import time
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -36,9 +37,16 @@ def scatter(col1, col2):
     return 0
 
 def main():
+
+    startTime = time.time()
     # load the dataset and remove unnecessary columns and NA row
     dataset = '/home/markg/Documents/TCD/ML/ML1819--task-107--team-11/dataset/default_color_dataset.csv'
     data = pd.read_csv(dataset, na_values = '?')
+    data['tweet_location'] = data['tweet_location'].astype('category')
+    data['user_timezone'] = data['user_timezone'].astype('category')
+    ### change the time
+    print (data.dtypes)
+    # print (np.dtype(data['tweet_location']))
     # data = data.drop(['Unnamed: 10', 'Unnamed: 11'], axis=1)
     # data = data.drop(data.index[9993])
 
@@ -53,13 +61,19 @@ def main():
 
     tweetCountMales = males.loc[:,'tweet_count']
     tweetCountFemales = females.loc[:,'tweet_count']
-    plotHistTwo(tweetCountMales, tweetCountFemales)
+    # plotHistTwo(tweetCountMales, tweetCountFemales)
 
     # retweetCountMales = males.loc[:,'retweet_count']
     # retweetCountFemales = females.loc[:,'retweet_count']
 
     # plot a histogram
     #plot_hist(fav_number, "title", "favourited tweets", "freq")
+
+    # to keep track of user_time
+    endTIme = time.time()
+
+    totalTime = startTime - endTIme
+    print(totalTime)
 if __name__ == '__main__':
   main()
 
