@@ -7,14 +7,28 @@ def boxplot(column):
     # to do: return a boxplot of each variables
     return 0
 
-def plot_hist(column):
+def plotHist(column, title, x_label, y_label):
     # to do: plot histogram for each individual variable
+    binwidth = [x for x in range(0,20000, 2000)]
+    ex = plt.hist(column, bins=binwidth)
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
 
-    return 0
+    return plt.show()
 
-def plot_hist_two(column, y):
+def plotHistTwo(colA, colB, title="", x_label="", y_label="frequency"):
     # to do: plot a two way histogram for male female for each variable
-    return 0
+    binwidth = [x for x in range(0,30000, 1000)]
+    # plt.hist(colA, bins=binwidth, alpha=0.5, label = "favNumberMales")
+    # plt.hist(colB, bins=binwidth, alpha=0.5, label = "favNumberFemales")
+    plt.hist([colA, colB], bins=binwidth, alpha=0.5, label=["tweetCountMales", "tweetCountFemales"])
+    plt.legend(loc='upper right')
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    return plt.show()
 
 def scatter(col1, col2):
     # to do: plot a scatter plot for variables. E.g. hue vs brightness with
@@ -23,18 +37,29 @@ def scatter(col1, col2):
 
 def main():
     # load the dataset and remove unnecessary columns and NA row
-    dataset = '/home/markg/Documents/TCD/ML/ML1819--task-107--team-11/dataset/twitter_gender_colors.csv'
+    dataset = '/home/markg/Documents/TCD/ML/ML1819--task-107--team-11/dataset/default_color_dataset.csv'
     data = pd.read_csv(dataset, na_values = '?')
-    data = data.drop(['Unnamed: 10', 'Unnamed: 11'], axis=1)
-    data = data.drop(data.index[9993])
+    # data = data.drop(['Unnamed: 10', 'Unnamed: 11'], axis=1)
+    # data = data.drop(data.index[9993])
+
+    # create a subset of males and females
+    males = data[data['gender']==0]
+    females = data[data['gender']==1]
 
     # to access specific columns
-    fav_number = data.loc[:,'fav_number']
+    favNumberMales = males.loc[:,'fav_number']
+    favNumberFemales = females.loc[:,'fav_number']
+#    plotHistTwo(favNumberMales, favNumberFemales)
 
-    # need to set a limit on value
-    # plt.hist(fav_number)
-    # plt.show()
+    tweetCountMales = males.loc[:,'tweet_count']
+    tweetCountFemales = females.loc[:,'tweet_count']
+    plotHistTwo(tweetCountMales, tweetCountFemales)
 
+    # retweetCountMales = males.loc[:,'retweet_count']
+    # retweetCountFemales = females.loc[:,'retweet_count']
+
+    # plot a histogram
+    #plot_hist(fav_number, "title", "favourited tweets", "freq")
 if __name__ == '__main__':
   main()
 
