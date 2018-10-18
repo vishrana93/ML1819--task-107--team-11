@@ -1,8 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 ignore::DeprecationWarning
 import time
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn import preprocessing
 
 def boxplot(column):
     # to do: return a boxplot of each variables
@@ -38,29 +39,49 @@ def scatter(col1, col2):
 
 def main():
 
+    # start time
     startTime = time.time()
-    # load the dataset and remove unnecessary columns and NA row
-    dataset = '/home/markg/Documents/TCD/ML/ML1819--task-107--team-11/dataset/default_color_dataset.csv'
+
+    # load the dataset
+    dataset = '/home/markg/Documents/TCD/ML/ML1819--task-107--team-11/dataset/overall_dataset.csv'
     data = pd.read_csv(dataset, na_values = '?')
+
+    # change appropriate variables to categorical
+    data['gender'] = data['gender'].astype('category')
     data['tweet_location'] = data['tweet_location'].astype('category')
     data['user_timezone'] = data['user_timezone'].astype('category')
-    ### change the time
-    print (data.dtypes)
-    # print (np.dtype(data['tweet_location']))
-    # data = data.drop(['Unnamed: 10', 'Unnamed: 11'], axis=1)
-    # data = data.drop(data.index[9993])
+
+    # reformat date column
+    data['created'] = pd.to_datetime(data['created'])
+
+    # create new columns for year and month
+    data['year'] = pd.DatetimeIndex(data['created']).year
+    data['month'] = pd.DatetimeIndex(data['created']).month
+
+    # remove original date column
+    data = data.drop(['created'], axis=1)
+
+    # standardize numeric variables
+    numericVariables = ['fav_number', 'tweet_count','retweet_count', 'link_hue',
+     'link_sat', 'link_vue', 'sidebar_hue', 'sidebar_sat', 'sidebar_vue']
+    scaler = preprocessing.StandardScaler()
+    data[numericVariables] = scaler.fit_transform(data[numericVariables])
+
+
+
+    print (data['month'])
 
     # create a subset of males and females
-    males = data[data['gender']==0]
-    females = data[data['gender']==1]
-
-    # to access specific columns
-    favNumberMales = males.loc[:,'fav_number']
-    favNumberFemales = females.loc[:,'fav_number']
-#    plotHistTwo(favNumberMales, favNumberFemales)
-
-    tweetCountMales = males.loc[:,'tweet_count']
-    tweetCountFemales = females.loc[:,'tweet_count']
+#     males = data[data['gender']==0]
+#     females = data[data['gender']==1]
+#
+#     # to access specific columns
+#     favNumberMales = males.loc[:,'fav_number']
+#     favNumberFemales = females.loc[:,'fav_number']
+# #    plotHistTwo(favNumberMales, favNumberFemales)
+#
+#     tweetCountMales = males.loc[:,'tweet_count']
+#     tweetCountFemales = females.loc[:,'tweet_count']
     # plotHistTwo(tweetCountMales, tweetCountFemales)
 
     # retweetCountMales = males.loc[:,'retweet_count']
@@ -73,7 +94,7 @@ def main():
     endTIme = time.time()
 
     totalTime = startTime - endTIme
-    print(totalTime)
+    # print(totalTime)
 if __name__ == '__main__':
   main()
 
