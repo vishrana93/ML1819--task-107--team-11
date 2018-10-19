@@ -4,9 +4,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import preprocessing
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.feature_selection import RFECV
 
 def boxplot(column):
     # to do: return a boxplot of each variables
@@ -41,11 +42,12 @@ def scatter(col1, col2):
     return 0
 
 def main():
+    #################### SETUP CODE ########################################
     # start time
     startTime = time.time()
 
     # load the dataset
-    dataset = '/home/markg/Documents/TCD/ML/ML1819--task-107--team-11/dataset/overall_dataset.csv'
+    dataset = '/home/markg/Documents/TCD/ML/ML1819--task-107--team-11/dataset/custom_color_dataset.csv'
     data = pd.read_csv(dataset, na_values = '?')
 
     # change appropriate variables to categorical. DON'T DO THIS!
@@ -69,6 +71,8 @@ def main():
     scaler = preprocessing.StandardScaler()
     data[numericVariables] = scaler.fit_transform(data[numericVariables])
 
+    ##################### END SETUP CODE ######################################
+
     # create dependent & independent variables
     X = data.drop('gender', axis=1)
     y = data['gender']
@@ -76,17 +80,52 @@ def main():
     # split into 90% training, 10% testing
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10)
 
-    # train model
-    svcclassifier = SVC(kernel='linear')
-    svcclassifier.fit(X_train, y_train)
+    # train model (could change kernel here)
+    svm = SVC(C=1, gamma=0.3, kernel='rbf')
+    svm.fit(X_train, y_train)
 
-    # make predictions
-    y_pred = svcclassifier.predict(X_test)
+    # recursive feature selection using cross validation
+    # rfecv = RFECV(estimator=svm, step=1, cv=StratifiedKFold(2),
+    #               scoring='accuracy')
+    # rfecv.fit(X, y)
+    # print("Optimal number of features : %d" % rfecv.n_features_)
+    # print("Feature ranking: ", rfecv.ranking_)
+    #
+    # # plot bar chart of feature ranking
+    # features = list(X)
+    # ranking = rfecv.ranking_
+    # plt.bar(features, ranking, align='center', alpha=0.5)
+    # plt.show()
+    #
+    # # Plot number of features VS. cross-validation scores
+    # plt.figure()
+    # plt.xlabel("Number of features selected")
+    # plt.ylabel("Cross validation score (nb of correct classifications)")
+    # plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_)
+    # plt.show()
 
-    # print metrics
+    # # make predictions and print metrics
+    y_pred = svm.predict(X_test)
     print(classification_report(y_test,y_pred))
     print(confusion_matrix(y_test,y_pred))
 
+    # # cross validation to choose c and gamma
+    # C_s, gamma_s = np.meshgrid(np.logspace(-2, 1, 20), np.logspace(-2, 1, 20))
+    # scores = list()
+    # i=0; j=0
+    # for C, gamma in zip(C_s.ravel(),gamma_s.ravel()):
+    #     svm.C = C
+    #     svm.gamma = gamma
+    #     this_scores = cross_val_score(svm, X, y, cv=5)
+    #     scores.append(np.mean(this_scores))
+    # scores=np.array(scores)
+    # scores=scores.reshape(C_s.shape)
+    # fig2, ax2 = plt.subplots(figsize=(12,8))
+    # c=ax2.contourf(C_s,gamma_s,scores)
+    # ax2.set_xlabel('C')
+    # ax2.set_ylabel('gamma')
+    # fig2.colorbar(c)
+    # fig2.savefig('crossvalOverall.png')
 
 #     # create a subset of males and females
 # #     males = data[data['gender']==0]
